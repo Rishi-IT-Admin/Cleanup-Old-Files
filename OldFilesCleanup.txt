@@ -1,0 +1,19 @@
+# Set the path to Old_Files folder
+$folderPath = "Old files folder"
+
+# Get the current date
+$currentDate = Get-Date
+
+# Calculate the date 5 days ago
+$deleteDate = $currentDate.AddDays(-5)
+
+# Get files older than 5 days in the Old_Files folder, excluding directories
+$oldFiles = Get-ChildItem -Path $folderPath -File | Where-Object { $_.LastWriteTime -lt $deleteDate }
+
+# Delete each old file
+foreach ($file in $oldFiles) {
+    Remove-Item $file.FullName -Force
+    Write-Host "Deleted: $($file.FullName)"
+}
+
+Write-Host "Cleanup complete."
